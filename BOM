@@ -1,0 +1,19 @@
+
+Quantity	Item		Unit Price	Total Price
+Main Items
+1		Cooler		$10.00		$10.00
+1		Coil Heater	$8.00		$8.00
+1		Therister Probe	$8.00		$8.00
+1		Pump		$10.00		$8.00
+1		Tubing		$1.00		$1.00
+Circuitry
+1		ATMEGA328	$5.00		$5.00
+4		Bridge Diodes	$0.25		$1.00
+1		High Vds MOSFET	$0.25		$0.25
+1		Gate Driver	$0.50		$0.50
+1		5A Fuse		$0.25		$0.25
+1		12V Zener	$0.25		$0.25
+1		5V LDO		$0.10		$0.10
+1		LCD		$10.00		$10.00
+	
+
