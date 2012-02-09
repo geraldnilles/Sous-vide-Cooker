@@ -1,4 +1,12 @@
-
 The goal of this project is to make a Sous-vide Cooker for less than $50.
+
+
+The LinkSwitch-TN IC provided by Power Integrations would be a very easy way to provide low voltage DC.
+The IC acts as a floating MOSFET with built in control circuitry.  
+You just provide a feedback loop with 1.65 Volts and it will act as a non iscolated buck.
+All i need to provide is the bridge and a 1mH inductor.  The switch will operate at 66kHz and will have an
+output current around 300mA
+THis would be more than enough to drive the LCD backlight, gate drivers, and MCUs.
+
 
 
