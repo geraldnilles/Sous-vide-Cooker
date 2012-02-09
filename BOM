@@ -1,4 +1,3 @@
-
 Quantity	Item		Unit Price	Total Price
 Main Items
 1		Cooler		$10.00		$10.00
@@ -15,5 +14,6 @@ Circuitry
 1		12V Zener	$0.25		$0.25
 1		5V LDO		$0.10		$0.10
 1		LCD		$10.00		$10.00
+1		LinkSwitch-TN	$1		$1
 	
 
