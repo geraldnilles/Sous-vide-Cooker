@@ -7,13 +7,22 @@ Main Items
 1		Tubing		$1.00		$1.00
 Circuitry
 1		ATMEGA328	$5.00		$5.00
-4		Bridge Diodes	$0.25		$1.00
-1		High Vds MOSFET	$0.25		$0.25
-1		Gate Driver	$0.50		$0.50
+2		Bridge Diodes	$0.25		$0.50
+2		High Vds MOSFET	$0.25		$0.50
+2		Gate Driver	$0.50		$1.00
 1		5A Fuse		$0.25		$0.25
-1		12V Zener	$0.25		$0.25
-1		5V LDO		$0.10		$0.10
-1		LCD		$10.00		$10.00
+1		5V Lin Reg	$0.10		$0.10
+1		LCD		$10.00		$1.70
+1		4-16 Decoder	
 1		LinkSwitch-TN	$1		$1
-	
 
+
+More Info
+*************
+* LCD
+*************
+7 Segment Display: http://www.mouser.com/ProductDetail/Lumex/LCD-S2X1C50TR/?qs=sGAEpiMZZMt7dcPGmvnkBjJpfzQAFhrWHBvHBp0%252bqDY%3d
+
+Will use a 4-16 decoder to drive the LCD
+We will scan through the active Segments and skip the inactive ones.
+http://www.ti.com/lit/ds/symlink/cd4514b.pdf
