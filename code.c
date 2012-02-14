@@ -15,6 +15,16 @@ int main(){
 	//
 }
 
+// 120Hz Interrupt
+// I fear that the pump has a 120V to 12V transformer inside of this.  Therefore, it will need an AC source.
+// To get aound this, we will probably need to switch the 170V rail at 60Hz
+void Timer0_Interrupt(){
+	if (MOSFET IS  ON){
+		TURN MOSFET OFF
+	}else{
+		TURN MOSFET ON
+	}
+}
 
 // Timer Interupt Routine
 // This function will be called once a second (roughly)
