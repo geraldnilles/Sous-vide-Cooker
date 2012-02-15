@@ -8,8 +8,8 @@ Main Items
 Circuitry
 1		ATMEGA328	$5.00		$5.00
 2		Bridge Diodes	$0.25		$0.50
-2		High Vds MOSFET	$0.25		$0.50
-2		Gate Driver	$0.50		$1.00
+2		High Vds P-MOSFET	$0.25		$0.50
+2		Gate Driver w/ Optocoupler	$0.50		$1.00
 1		5A Fuse		$0.25		$0.25
 1		5V Lin Reg	$0.10		$0.10
 1		LCD		$10.00		$1.70
@@ -26,3 +26,15 @@ More Info
 Will use a 4-16 decoder to drive the LCD
 We will scan through the active Segments and skip the inactive ones.
 http://www.ti.com/lit/ds/symlink/cd4514b.pdf
+
+
+*************
+* MOSFET
+*************
+Initially i wanted to control the pump and heater using an NMOS.  
+The problem is that this floats the peripherals at 170 volts.
+This could be ok if the AC prongs are isolated from the grounding prong on the pump and the heater, but we cant 
+count on that. Escpecially since we are trying to buy the cheapest parts possible.
+The safest way would be to use a PMOS on the high side.
+This will make sure that the device is not floating.  However, this means we will need to float the gate driver.
+This will be possible if we use a gate driver that has an optocoupler input (see Mouser).
