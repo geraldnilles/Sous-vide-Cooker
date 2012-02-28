@@ -38,3 +38,17 @@ count on that. Escpecially since we are trying to buy the cheapest parts possibl
 The safest way would be to use a PMOS on the high side.
 This will make sure that the device is not floating.  However, this means we will need to float the gate driver.
 This will be possible if we use a gate driver that has an optocoupler input (see Mouser).
+
+
+****************
+** Temp Sensing
+****************
+After looking for thermistor based probes, i decided it might be easier to do a thermocouple based design.
+The thermouple voltage will increase at about 40uV/C.  The minimum voltage the ADC can read is 5V/2^10 = 4.88mV.
+So if we want to be able to detect a 0.5C change in temp (~1F), we will need a gain of 4.88mV/40uV = 122.
+Lets round that to 200.
+Since we will only be measuring voltage that are higher than room temp, we can use a unipolar opamp circuit.
+We will use a non inverting opamp circuit to drive the opamp input.
+We will also need a thermistor to read the ambient temperature at the thermocouple connector.  We will use this reading as an offset
+We can probably linearize the reading since its a relatviely small range, or we could just use a lookup table.
+
