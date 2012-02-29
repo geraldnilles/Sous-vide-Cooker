@@ -2,7 +2,7 @@ Quantity	Item		Unit Price	Total Price
 Main Items
 1		Cooler		$10.00		$10.00
 1		Coil Heater	$8.00		$8.00
-1		Therister Probe	$8.00		$8.00
+1		Thermocpl	$8.00		$8.00
 1		Pump		$10.00		$8.00
 1		Tubing		$1.00		$1.00
 Circuitry
@@ -15,6 +15,7 @@ Circuitry
 1		LCD		$10.00		$1.70
 1		4-16 Decoder	
 1		LinkSwitch-TN	$1		$1
+1		Opamp		$.25		$.25
 
 
 More Info
@@ -51,4 +52,5 @@ Since we will only be measuring voltage that are higher than room temp, we can u
 We will use a non inverting opamp circuit to drive the opamp input.
 We will also need a thermistor to read the ambient temperature at the thermocouple connector.  We will use this reading as an offset
 We can probably linearize the reading since its a relatviely small range, or we could just use a lookup table.
+
 

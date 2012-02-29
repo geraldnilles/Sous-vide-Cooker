@@ -1,10 +1,10 @@
 %!PS-Adobe-3.0 EPSF-3.0
 %%Title: circuit.eps
 %%Creator: XCircuit v3.6 rev135
-%%CreationDate: Thu Feb  9 19:00:58 2012
+%%CreationDate: Tue Feb 28 19:54:52 2012
 %%Pages: 1
-%%BoundingBox: 68 68 784 615
-%%DocumentNeededResources: font Helvetica Times-Roman 
+%%BoundingBox: 68 68 820 615
+%%DocumentNeededResources: font Helvetica Times-Roman Symbol 
 %%EndComments
 %%BeginProlog
 %
@@ -236,15 +236,6 @@ begingate
 endgate
 } def
 
-/generic::dot {
-% trivial
-begingate
-248 1.000 0 0 6 0.000 360.000 xcarc
-1.000 0.000 0.000 scb
-(x) {/Times-Roman cf} 2 29 0 1.000 0 0 pinlabel
-endgate
-} def
-
 /generic::circle {
 % trivial
 begingate
@@ -356,6 +347,27 @@ begingate
 endgate
 } def
 
+/generic::dot {
+% trivial
+begingate
+248 1.000 0 0 6 0.000 360.000 xcarc
+1.000 0.000 0.000 scb
+(x) {/Times-Roman cf} 2 29 0 1.000 0 0 pinlabel
+endgate
+} def
+
+/analog::opamp {
+begingate
+0 1.000 -80 -80 -80 80 80 0 3 polygon
+(-) {/Symbol cf} 2 5 0 1.000 -61 42 label
+(+) {/Symbol cf} 2 5 0 1.000 -61 -50 label
+1.000 0.000 0.000 scb
+(in.m) {/Times-Roman cf} 2 7 0 1.000 -80 48 pinlabel
+(in.p) {/Times-Roman cf} 2 7 0 1.000 -80 -48 pinlabel
+(out) {/Times-Roman cf} 2 4 0 1.000 80 0 pinlabel
+endgate
+} def
+
 
 %%EndSetup
 
@@ -377,20 +389,15 @@ sce
 1 1.000 -448 64 -416 64 2 polygon
 -1.000 0 -160 0 analog::nmos2
 1.000 0 -160 -64 analog::gnd
--1.000 0 -64 -96 analog::nmos2
-1.000 0 -64 -160 analog::gnd
 1 1.000 -416 192 -416 288 -160 288 -160 64 4 polygon
 1 1.000 -448 192 -448 320 -160 320 3 polygon
-1 1.000 -528 -160 -528 352 -64 352 -64 -32 4 polygon
-1 1.000 -544 -160 -544 384 -160 384 3 polygon
 1 1.000 -160 320 -160 416 2 polygon
 1 1.000 -368 -176 -352 48 -352 144 -480 -176 spline
 1 1.000 -352 -192 -320 16 -320 144 -464 -192 spline
 1.000 0 -336 112 generic::arrow
 1 1.000 -464 -192 -480 -192 2 polygon
-1 1.000 -160 416 -160 448 -192 448 -128 448 4 polygon
+1 1.000 1312 768 1312 800 1280 800 1344 800 4 polygon
 (170V) {/Helvetica cf} 2 31 0 1.000 -112 480 label
-1.000 0 -160 384 generic::dot
 0 1.000 544 192 544 80 896 80 896 192 4 polygon
 (140F        141F) {/Helvetica cf} 2 16 0 1.000 576 128 label
 1.000 0 576 -112 analog::switch
@@ -399,10 +406,9 @@ sce
 1.000 0 704 -176 analog::gnd
 0 1.000 160 256 160 -176 368 -176 368 256 4 polygon
 1 1.000 -96 0 160 0 2 polygon
-1 1.000 0 -96 160 -96 2 polygon
 1 1.000 368 0 704 0 704 -64 3 polygon
 1 1.000 576 -64 576 -32 368 -32 3 polygon
-1 1.000 368 128 544 128 2 polygon
+1 2.000 368 128 544 128 2 polygon
 1.000 0 416 -160 analog::gnd
 1 1.000 416 -160 368 -160 2 polygon
 1.000 0 224 256 analog::vdd
@@ -462,6 +468,36 @@ sce
 1.000 0 560 928 generic::dot
 1.000 0 816 928 generic::dot
 1.000 0 912 928 generic::dot
+-1.000 180 224 544 analog::opamp
+1.000 0 96 448 analog::resistor
+1.000 90 -32 576 analog::resistor
+1.000 90 -32 528 analog::resistor
+1.000 90 240 656 analog::resistor
+1 1.000 -96 576 -160 576 -160 528 -96 528 4 polygon
+1 2.000 -160 560 -576 560 -576 16 3 polygon
+1 1.000 32 576 144 576 2 polygon
+1 1.000 48 528 144 528 2 polygon
+1 1.000 48 528 32 528 2 polygon
+1 1.000 96 512 96 528 2 polygon
+1.000 0 96 400 analog::gnd
+1 1.000 96 576 96 656 176 656 3 polygon
+1 1.000 304 656 352 656 352 544 304 544 4 polygon
+1.000 0 0 160 analog::resistor
+1.000 0 0 272 analog::resistor
+1.000 45 0 160 generic::arrow
+1.000 0 0 112 analog::gnd
+1.000 0 0 320 analog::vdd
+1 1.000 0 208 160 208 2 polygon
+1 1.000 352 544 416 544 416 224 368 224 4 polygon
+1.000 0 96 576 generic::dot
+1.000 0 96 528 generic::dot
+1.000 0 352 544 generic::dot
+1.000 0 0 208 generic::dot
+1.000 0 -576 16 generic::dot
+1 1.000 -160 416 -160 448 -192 448 -128 448 4 polygon
+1 1.000 -64 864 -64 960 2 polygon
+(170V) {/Helvetica cf} 2 31 0 1.000 -16 1024 label
+1 1.000 -64 960 -64 992 -96 992 -32 992 4 polygon
 pgsave restore showpage
 
 %%Trailer
