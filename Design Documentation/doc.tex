@@ -120,7 +120,17 @@ In addition, PID monitors the integral and derivitive of the error to quickly br
 
 The hardest part will be picking the P, I and D constants. 
 These constant are used to weight the importance of each input.  
-Instead of doing the thermal dynamics to figure out good constants, i will probably just use trial and error to pick a conservative
+Instead of doing the thermal dynamics to figure out good constants, i will probably just use trial and error to pick a conservative.\\
+
+To start guessing a good set of PID constants, we should know how long it will take to heat the water.
+Assuming we use my 5 Liter Crock Pot to hold th water, the Heating coil produces 300 Watts, and we are heating the water from 70 degrees F to 160 Degrees F (90 Degrees delta), it will take 58 minutes to heat up the water.
+\begin{equation}
+5 L * \frac{4.18 joules}{.001 L * 1^oC} * 90^oF * \frac{5^oC}{9^oF} * \frac{1 second}{300 joules} = 58 minutes
+\end{equation}
+This is a very weak estimation since it assumes the water is perfectly insulated from the surrounding air, but it gives us an idea of how long the heating cycle will take.
+
+In a quick, dirty test, i found that the water temp in my crock pot drops about 2 degrees in 10 minutes.
+
 
 \subsection{LCD Driver}
 \subsection{Switch Debouncing}
