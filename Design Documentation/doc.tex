@@ -80,7 +80,11 @@ Assuming we use a thermocouple with a sensitivity of 40uV per degree, a change o
 $1^oF * \frac{5^oC}{9^oF} * \frac{40 \mu V}{5^oC} = 22 \mu V$.
 THerefore, in order to detect a shift in 1 degree F, a gain of $\frac{4.88 mV}{22 \mu V} = 221.8$.
 Now, lets verify that this gain will not over-volt the ADC: $200^oF * 22\frac{\mu V}{F} * 221.8 = 0.975 V$.
-So we have plenty of headroom to increase the gain.
+So we have plenty of headroom to increase the gain.\\
+
+Since thermocouples only measure temperature gradients, we will need to use an on-board thermistor to read the board temperature.
+This temparature will be used as an offset to add to the thermocouple temperature.
+Since it just measuring the baord temperature, it can be small and cheap.
 
 
 
@@ -102,8 +106,22 @@ These switches can simply use the internal pull ups so no external circuitry wil
 To prevent switch bouncing, we will likely need to implement a debouncing routine in the software.
 This will prevent a single button press from becoming a multi-click press.
 
+\subsection{Microcontroller}
+I will likely use an Atmel AtMega328.
+It is not the cheapest option, but i am familiar with the platform because it is used by Arduino.
+It has plenty of GPIOs and ADC ports.
+
 \section{Software Design}
 \subsection{PID Controller}
+To regulate the water temperature, i will use a PID control loop.
+PID stands for Proportional, Integral, Derivative.  
+Like every control loop, PID monitors the error between the set temp and the current temp.
+In addition, PID monitors the integral and derivitive of the error to quickly bring the error to zero without overshooting.\\
+
+The hardest part will be picking the P, I and D constants. 
+These constant are used to weight the importance of each input.  
+Instead of doing the thermal dynamics to figure out good constants, i will probably just use trial and error to pick a conservative
+
 \subsection{LCD Driver}
 \subsection{Switch Debouncing}
 
