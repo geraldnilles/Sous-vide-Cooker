@@ -1,0 +1,112 @@
+\documentclass[12pt,letterpaper]{article}
+\author{Gerald Nilles}
+\title{Sous Vide Cooker}
+
+\usepackage{graphicx}
+
+
+\begin{document}
+
+%% Create title based on head \title info
+\maketitle
+
+%% Create TOC based on sections below
+\tableofcontents
+
+\newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Introduction}
+The goal of this project is to create a cheap Sous Vide cooking system.
+\subsection{What is Sous Vide}
+Sous Vide is a method of cooking meat developed by the French.
+With this method, the meat, seasonings and marinades are put in a sealed plastic bag (Vaccum bags are preferred by Zip-Lock bags are ok).
+This bag is submerged in a pool of water that is precisly regulated to the meat's desired cooking temperature.
+After several  hours, the meat's internal temperature will match that of the water and the meat will be perfectly cooked.\\
+
+\subsection{Why Sous Vide}
+By cooking the meat in a closed environment, all of the juices are sealed in and the meat will be extremely soft and juicy.
+When finished, the meat is usually quickly seared with a hot pan or a creme brulee torch.
+This will give the meat a carmelized taste and will make it look normal.
+
+
+\section{Hardware Design}
+Regulating the temperature requires a homemade circuit.
+This circuit will use heating coils to warm the water, a thermocouple to monitor the water temperature, and a water pump to circuitlate the water.
+All of these devices will be controlled by a microcontroller unit (MCU).
+This MCU will turn on and off the heating coild and pump to maintain a set temperature.
+The temperature will be displayed on a 2.5 digit LCD display.
+\subsection{5V AC/DC Converter}
+The wall voltage is alternating 120 Volts RMS (170 Volts Peak to Peak).  
+This voltage will be good for powering the pump and the heating coil, but will be way to high for the MCU.
+Therefore, we will need to rectify and buck the voltage down to a constant 5 Volts DC.
+Seeing how important and potentially dangerous this process is, it is best to handle this with a designated IC.
+Power Integrations makes a very easy to use IC called LinkSwitch-TN that will creat a non-isolated, low power 5 V rail.\\
+I will simply use the reference design on their datasheet (for 12 V), but adjust the feedback resistors to achieve a 5V output instead.
+This converter will only be able to produce about 1W of power, but that is all we will need to power the MCU and LCD.
+
+\subsection{Display}
+In order to display the set temperature and current temperature, we will need a set of 7-segment displays.
+The 2 more common options is an LED display (often used in microwaves and alarm clocks) and a LCD (often used in themostats).
+LED displays use more power, but can be seen in dark environments.
+LCDs use much less power, but cannot be seen in dark environments.
+Since dark viewing is not a requirement, the LCD is the more logical choice.\\
+
+Since there will be a total of 16 segments that need to be chosen, we will either need 16 GPIOs or use a 4 to 16 decoder.
+When using 16 GPIOs, the usage is obvious:  Simply set the voltage high when that segment is active.
+When using a 4to16 decoder, the MCU will need to do some sequencing.
+With the decoder, only 1 segment can be on at a time.  
+THerefore, the MCU will need to quickly scan through each of the 16 segments and either activate or deactiveate.
+This scanning will happen very quickly so the human eye will not be able to percieve the scan.
+
+\subsection{Temperature Measurement}
+There are 2 common ways of measuring temperature:  Thermistors and Thermocouples.
+Thermistors are easier to measure (a simple voltage divider circuit can be used).
+However, thermistor probes that are safe to put in water are a little pricey.
+Thermocouples are dirt cheap (they are basically just a wire).  
+However, they are harder to measure (an OpAmp circuit is required).
+Since OpAmps are very cheap, using thermocouples will be the cheaper option.\\
+
+A thermocouple is essentially a metal wire.
+When any metal experience a gradient in temperature, it produces a low voltage (in the range of 40uV per degree Celcius).
+Since we want to measure the temperature accurately to within 1 degree F, we will need an amplifier so the MCU's analog to digital converter can read the voltage.
+The simpliest option would use a non-inverting opamp amplifer.\\
+
+Lets do some math to find a good gain.  
+The MCU is running at 5 Volts and has a 10bit ADC.  
+THis means the smallest voltage it can detect is $ \frac{5}{2^{10}} = 4.88 mV $.
+Assuming we use a thermocouple with a sensitivity of 40uV per degree, a change of 1 degree F will be
+$1^oF * \frac{5^oC}{9^oF} * \frac{40 \mu V}{5^oC} = 22 \mu V$.
+THerefore, in order to detect a shift in 1 degree F, a gain of $\frac{4.88 mV}{22 \mu V} = 221.8$.
+Now, lets verify that this gain will not over-volt the ADC: $200^oF * 22\frac{\mu V}{F} * 221.8 = 0.975 V$.
+So we have plenty of headroom to increase the gain.
+
+
+
+\subsection{Coil Driver}
+The heating coil is basically a 48 Ohm resistor rated to 300 Watts.
+Therefore, it does not need an alternating voltage to run.
+However, if we powered it with the rectified 170V DC rail, it would go way over its rated 300 Watts.
+For this reason, its power will need to be switched on and off with a 50\% duty cycle to keep the power down.\\
+\subsubsection{Switching CIrcuit}
+Since we dont want this device to float at 170V when its off, we will use a PMOS to switch the power.
+This will require a high-side FET driver.
+I found that the cheapest method would be to create a custom floating fet driver circuit that uses a PNP and NPN to power the Gate.  A 10V Zener will be used to power the driver.
+SInce the switching frequency will be low (around 120Hz), the zener can be low power.
+This same circuit can also be used to turn on and off the pump if we dont want to leave it on 24/7.
+
+\subsection{User Interface Buttons}
+The circuit will require 3 buttons:  Increase Temp, Decrease Temp, Reset.
+These switches can simply use the internal pull ups so no external circuitry will be needed.
+To prevent switch bouncing, we will likely need to implement a debouncing routine in the software.
+This will prevent a single button press from becoming a multi-click press.
+
+\section{Software Design}
+\subsection{PID Controller}
+\subsection{LCD Driver}
+\subsection{Switch Debouncing}
+
+
+
+\end{document}
