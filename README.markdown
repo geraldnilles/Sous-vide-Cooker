@@ -43,6 +43,8 @@ Initially i wanted to use a 7-segment deisplay, but found that there are many ch
 
 I will just need to find a UART to BT transiever that im set!
 
+You can buy whole modules for $7 to $15.  Or you can buy an SOC from Nordic which looks promising
+
 ## Control
 ALl of the above circuits will be controlled by a MCU.
 The type of MCU is TBD.
