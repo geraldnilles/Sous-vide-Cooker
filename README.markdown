@@ -54,6 +54,22 @@ ALl of the above circuits will be controlled by a MCU.
 The type of MCU is TBD.
 ALl it will need to do is communicate over UART and have ADC capabilities.
 
+### MCU Requirements
+* 2 ADC Inputs
+* UART Communication
+* 5V Operating voltage
+
+PIC12F1822 is an 8Bit part with 2 ADC channels, a UART communication path.
+COul be good!  Base part is that it only costs $1.38 on mouser.
+
+2 inpus for ADC
+2 Pins for UART
+1 pin for REST
+1 pin for Relay control
+2 pins for PWR and GND
+
+### Programmer
+I should be able to program a PIC using an adruino board.  We'll see.
 
 # User Interface
 Setting tempreatures will be done on a computer using bluetooth.
@@ -66,7 +82,17 @@ This will (a) make the project cool and (b) actaully be cheaper and easier than 
 # Softare
 
 ## MCU Code
-C code ore assembly
+C code or assembly
+
+It will either toggle the relays or create a 60Hz square wave
+
+### Compiler
+We will need to find a PIC compiler
+
+GPUTILS looks like a good assembler/linker that we could use.
 
 ## Computer Code
 Python code to read/write commands from/to the MCU.
+
+A serial port will be used.
+It can either be a USB to serial adaptor or it can us bluetooth.

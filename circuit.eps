@@ -1,23 +1,23 @@
 %!PS-Adobe-3.0 EPSF-3.0
 %%Title: circuit.eps
-%%Creator: XCircuit v3.6 rev135
-%%CreationDate: Wed Feb 29 20:29:54 2012
+%%Creator: XCircuit v3.7 rev26
+%%CreationDate: Tue Sep  4 19:57:35 2012
 %%Pages: 1
-%%BoundingBox: 68 68 874 637
+%%BoundingBox: 68 68 784 458
 %%DocumentNeededResources: font Helvetica Times-Roman Symbol 
 %%EndComments
 %%BeginProlog
 %
 %  PostScript prolog for output from xcircuit
-%  Version: 3.3
+%  Version: 3.7
 %
 %  Electrical circuit (and otherwise general) drawing program
 %
-%  Written by Tim Edwards 8/5/93--7/13/05  (tim.edwards@multigig.com)
+%  Written by Tim Edwards 8/5/93--11/1/10  (tim.edwards@multigig.com)
 %  The Johns Hopkins University (1993-2004)
 %  MultiGiG, Inc. (2004-present)
 %
-%%BeginResource: procset XCIRCproc 3.3 0
+%%BeginResource: procset XCIRCproc 3.7 2
 %
 % supporting definitions --- these are the primary xcircuit types.
 
@@ -85,25 +85,28 @@
 	translate /showflag 1 def /Bline 0 def /Tabs 0 array def /fscale
 	1.0 def /kY 0 def {dup type /stringtype eq {mshow} {dup type
 	/arraytype eq {exec} {12 string cvs mshow} ifelse} ifelse} repeat
-	grestore } def
+	grestore endclip} def
 /pinlabel { 4 index 32 and 0 ne hlevel 0 eq or { /pspc 10 def label
 	/pspc 0 def } { pop pop pop pop pop {pop} repeat } ifelse } def
 /pinglobal { pinlabel } def
 /infolabel { pinlabel } def
-/graphic { gsave 4 index cvx exec /DataSource get resetfile translate
-	0 0 moveto neg rotate dup scale cvx exec image grestore } def
+/graphic { gsave 4 index cvx exec /DataSource get resetfile translate 0 0
+	moveto neg rotate dup scale cvx exec image grestore endclip} def
 
 /scb { setrgbcolor } bind def  /sce { defColor aload pop scb } bind def
 /cRedef {/defColor currentcolor 3 array astore def} def
 /begingate {dup type /dicttype ne {1 dict} if begin	% default params
 	dup type /dicttype ne {1 dict} if begin		% instanced params
-	/hlevel hlevel 1 add def /defColor currentcolor sce 3 array
-	astore def gsave sce translate 0 0 moveto neg rotate dup abs scale
-	} bind def
+	/hlevel hlevel 1 add def /defColor currentcolor sce 3 array astore
+	def gsave sce translate 0 0 moveto neg rotate dup type /nametype
+	eq not { dup abs currentlinewidth exch div setlinewidth } { pop }
+	ifelse dup abs scale clipped 1 and 1 eq {/clipped clipped 1 add def}
+	if} bind def
 /endgate { /hlevel hlevel 1 sub def grestore defColor aload pop cRedef
-	scb end end} bind def
+	scb end end endclip} bind def
 
 /hlevel 0 def
+/endclip {clipped 1 and 1 eq {grestore /clipped clipped 1 sub def} if} def
 /tmpa [1 0 0 1 0 0] def
 /gar {8 8 true tmpa {<c0 c0 00 00 0c 0c 00 00>} imagemask} bind
 {8 8 true tmpa {<30 70 60 02 03 07 06 20>} imagemask} bind
@@ -118,7 +121,8 @@
   { 3 index exch 5 exch put dup -8 3 index { 3 index
   exch 4 exch put 3 index exec } for } for pop pop pop pop grestore } bind def
 /setstyles {
-  currentlinewidth mul setlinewidth /style exch def
+  currentlinewidth mul setlinewidth /style exch def style 2048 and 0 gt
+  clipped 1 and 0 eq and {clip newpath /clipped clipped 1 add def} {
   style 1 and 0 gt not {closepath} if
   style 1024 and 0 gt {2 setlinecap} if
   style 2 and 0 gt {currentlinewidth 4 mul dup 2 array astore 0 setdash} if
@@ -128,8 +132,18 @@
   {3 copy mul add 4 1 roll pop} forall pop pop setrgbcolor eofill}
   {dup 7 lt {gar exch get ppaint} {pop eofill} ifelse} ifelse}
   {style 256 and 0 gt {1 setgray eofill} if} ifelse grestore style 8 and 0 gt 
-  style 512 eq or {newpath} {stroke} ifelse grestore} def     
+  style 512 eq or {newpath} {stroke} ifelse grestore endclip} ifelse} def     
 
+/addtoy {exch dup dup 2 mul 3 add 1 roll -1 1 { 4 1 roll dup 4 1 roll add
+	4 -1 roll 2 mul 1 add index 2 mul 2 add 2 roll} for pop} def
+/addtoy1 {1 exch addtoy pop} def
+/addtoy3 {3 exch addtoy pop} def
+/addtoy4 {4 exch addtoy pop} def
+/addtox {exch dup dup 2 mul 3 add 1 roll -1 1 { 4 1 roll dup 4 1 roll 3 -1 roll
+	add exch 4 -1 roll 2 mul 1 add index 2 mul 2 add 2 roll} for pop} def
+/addtox1 {1 exch addtox pop} def
+/addtox3 {3 exch addtox pop} def
+/addtox4 {4 exch addtox pop} def
 /polygon { gsave /num exch def moveto num 1 sub {lineto} repeat setstyles } def
 /xcarc   { gsave newpath arc setstyles } def
 /elb { matrix currentmatrix 7 -1 roll 7 -1 roll translate 5 1 roll 4 -1 roll
@@ -142,7 +156,8 @@
 /polyc   { {lineto} repeat } bind def
 /beginpath { gsave moveto } bind def
 /endpath { setstyles } bind def
-/bop	 { 1 setlinecap 0 setlinejoin 6 setmiterlimit 0 0 0 scb cRedef } def
+/bop	 { 1 setlinecap 0 setlinejoin 6 setmiterlimit 0 0 0 scb cRedef
+	/clipped 0 def} def
 /psinsertion {/PSobj save def /showpage {} def /setpagedevice {pop} def bop
 	rotate translate dup scale} def
 /end_insert {PSobj restore} def
@@ -236,31 +251,6 @@ begingate
 endgate
 } def
 
-/generic::circle {
-% trivial
-begingate
-1 1.000 16 0 6 0.000 360.000 xcarc
-1 1.000 0 0 10 0 2 polygon
-1.000 0.000 0.000 scb
-(out) {/Times-Roman cf} 2 4 0 1.000 16 0 pinlabel
-(out) {/Times-Roman cf} 2 7 0 1.000 0 0 pinlabel
-endgate
-} def
-
-/analog::switch {
-% trivial
-begingate
-1 1.300 32 32 2 -43 2 polygon
-1 0.600 0 -48 57 49.000 90.000 xcarc
--1.000 90 0 -64 generic::circle
-0.600 270 -12 8 generic::arrowhead
-1.000 90 0 48 generic::circle
-1.000 0.000 0.000 scb
-(sw.1) {/Times-Roman cf} 2 9 0 1.000 0 48 pinlabel
-(sw.2) {/Times-Roman cf} 2 13 0 1.000 0 -64 pinlabel
-endgate
-} def
-
 /analog::vdd {
 % trivial
 begingate
@@ -272,49 +262,15 @@ begingate
 endgate
 } def
 
-/analog::source {
-% hidden
+/analog::opamp {
 begingate
-1 1.000 0 0 32 0.000 360.000 xcarc
-1 1.000 0 32 0 64 2 polygon
-1 1.000 0 -32 0 -64 2 polygon
-endgate
-} def
-
-/analog::acsource {
-begingate
-1.000 0 0 0 analog::source
-1 0.800 0 -48 0 48 -16 0 16 0 spline
+0 1.000 -80 -80 -80 80 80 0 3 polygon
+(-) {/Symbol cf} 2 5 0 1.000 -61 42 label
+(+) {/Symbol cf} 2 5 0 1.000 -61 -50 label
 1.000 0.000 0.000 scb
-(s.p) {/Times-Roman cf} 2 9 0 1.000 0 64 pinlabel
-(s.m) {/Times-Roman cf} 2 13 0 1.000 0 -64 pinlabel
-endgate
-} def
-
-/analog::diode {
-begingate
-248 1.000 -18 -16 0 16 18 -16 3 polygon
-1 1.000 0 -48 0 -16 2 polygon
-1 1.000 0 48 0 16 2 polygon
-1 1.000 -18 16 18 16 2 polygon
-1.000 0.000 0.000 scb
-(d.m) {/Times-Roman cf} 2 9 0 1.000 0 48 pinlabel
-(d.p) {/Times-Roman cf} 2 13 0 1.000 0 -48 pinlabel
-endgate
-} def
-
-/analog::polarized {
-begingate
-1 1.000 0 -64 0 -6 2 polygon
-1 1.000 0 64 0 6 2 polygon
-1 1.000 -32 6 32 6 2 polygon
-1 1.000 0 -80 74 66.000 114.000 xcarc
-1.000 0.000 0.000 scb
-(t) {/Times-Roman cf} 2 9 0 1.000 0 64 pinlabel
-(b) {/Times-Roman cf} 2 13 0 1.000 0 -64 pinlabel
-0.180 0.545 0.341 scb
-(spice:C%i %pt %pb 1.0P) {/Times-Roman cf} 2 0 0 1.000 -208 -160 infolabel
-(sim:e %pt %pb %pb) {/Times-Roman cf} 2 0 0 1.000 -208 -208 infolabel
+(in.m) {/Times-Roman cf} 2 7 0 1.000 -80 48 pinlabel
+(in.p) {/Times-Roman cf} 2 7 0 1.000 -80 -48 pinlabel
+(out) {/Times-Roman cf} 2 4 0 1.000 80 0 pinlabel
 endgate
 } def
 
@@ -332,21 +288,6 @@ begingate
 endgate
 } def
 
-/analog::capacitor {
-begingate
-1 1.000 0 -64 0 -6 2 polygon
-1 1.000 0 64 0 6 2 polygon
-1 1.000 -32 6 32 6 2 polygon
-1 1.000 -32 -6 32 -6 2 polygon
-1.000 0.000 0.000 scb
-(c.1) {/Times-Roman cf} 2 9 0 1.000 0 64 pinlabel
-(c.2) {/Times-Roman cf} 2 13 0 1.000 0 -64 pinlabel
-0.180 0.545 0.341 scb
-(spice:C%i %pc.1 %pc.2 1.0P) {/Times-Roman cf} 2 0 0 1.000 -208 -160 infolabel
-(sim:c %pc.1 %pc.2) {/Times-Roman cf} 2 0 0 1.000 -208 -208 infolabel
-endgate
-} def
-
 /generic::dot {
 % trivial
 begingate
@@ -356,74 +297,39 @@ begingate
 endgate
 } def
 
-/analog::opamp {
+/generic::circle {
+% trivial
 begingate
-0 1.000 -80 -80 -80 80 80 0 3 polygon
-(-) {/Symbol cf} 2 5 0 1.000 -61 42 label
-(+) {/Symbol cf} 2 5 0 1.000 -61 -50 label
+1 1.000 16 0 6 0.000 360.000 xcarc
+1 1.000 0 0 10 0 2 polygon
 1.000 0.000 0.000 scb
-(in.m) {/Times-Roman cf} 2 7 0 1.000 -80 48 pinlabel
-(in.p) {/Times-Roman cf} 2 7 0 1.000 -80 -48 pinlabel
-(out) {/Times-Roman cf} 2 4 0 1.000 80 0 pinlabel
+(out) {/Times-Roman cf} 2 4 0 1.000 16 0 pinlabel
+(out) {/Times-Roman cf} 2 7 0 1.000 0 0 pinlabel
 endgate
 } def
 
-/analog::pmos2 {
+/analog::switch {
+% trivial
 begingate
-1.000 0 0 0 analog::nmos
-1.000 270 -32 28 generic::arrowhead
+1 1.300 32 32 2 -43 2 polygon
+1 0.600 0 -48 57 49.000 90.000 xcarc
+-1.000 /sv 90 0 -64 generic::circle
+0.600 /sv 270 -12 8 generic::arrowhead
+1.000 90 0 48 generic::circle
 1.000 0.000 0.000 scb
-(G) {/Times-Roman cf} 2 7 0 1.000 -64 0 pinlabel
-(S) {/Times-Roman cf} 2 9 0 1.000 0 64 pinlabel
-(D) {/Times-Roman cf} 2 13 0 1.000 0 -64 pinlabel
-endgate
-} def
-
-/analog::npn {
-begingate
-1 1.000 -48 0 -64 0 2 polygon
-1 1.000 -48 48 -48 -48 2 polygon
-1 1.000 0 48 -48 22 2 polygon
-1 1.000 0 48 0 64 2 polygon
-1 1.000 0 -48 -48 -22 2 polygon
-1 1.000 0 -48 0 -64 2 polygon
-1.000 120 0 -48 generic::arrowhead
-1.000 0.000 0.000 scb
-(C) {/Times-Roman cf} 2 9 0 1.000 0 64 pinlabel
-(B) {/Times-Roman cf} 2 7 0 1.000 -64 0 pinlabel
-(E) {/Times-Roman cf} 2 13 0 1.000 0 -64 pinlabel
-0.180 0.545 0.341 scb
-(spice:Q%i %pC %pB %pE npn) {/Times-Roman cf} 2 4 0 1.000 -244 -139 infolabel
-(sim:b %pB %pE %pC) {/Times-Roman cf} 2 4 0 1.000 -244 -187 infolabel
-endgate
-} def
-
-/analog::pnp {
-begingate
-1 1.000 -48 0 -64 0 2 polygon
-1 1.000 -48 48 -48 -48 2 polygon
-1 1.000 0 48 -48 22 2 polygon
-1 1.000 0 48 0 64 2 polygon
-1 1.000 0 -48 -48 -22 2 polygon
-1 1.000 0 -48 0 -64 2 polygon
-1.000 240 -48 22 generic::arrowhead
-1.000 0.000 0.000 scb
-(C) {/Times-Roman cf} 2 13 0 1.000 0 -64 pinlabel
-(B) {/Times-Roman cf} 2 7 0 1.000 -64 0 pinlabel
-(E) {/Times-Roman cf} 2 9 0 1.000 0 64 pinlabel
-0.180 0.545 0.341 scb
-(spice:Q%i %pC %pB %pE pnp) {/Times-Roman cf} 2 4 0 1.000 -244 -139 infolabel
+(sw.1) {/Times-Roman cf} 2 9 0 1.000 0 48 pinlabel
+(sw.2) {/Times-Roman cf} 2 13 0 1.000 0 -64 pinlabel
 endgate
 } def
 
 
 %%EndSetup
 
-%%Page: 1 1
+%%Page: circuit 1
 %%PageOrientation: Portrait
 /pgsave save def bop
 1.0000 inchscale
-2.6000 setlinewidth 832 464 translate
+2.6000 setlinewidth 832 432 translate
 
 1 1.000 -640 272 -640 -240 -256 -240 -256 272 -272 272 -272 -224 -624 -224 -624 
 272 -640 272 9 polygon
@@ -435,72 +341,18 @@ sce
 0 1.000 -624 -160 -624 -208 -480 -208 -480 -160 4 polygon
 1.000 0 -416 128 analog::inductor
 1 1.000 -448 64 -416 64 2 polygon
--1.000 0 224 -64 analog::nmos2
+-1.000 /sv 0 224 -64 analog::nmos2
 1.000 0 224 -128 analog::gnd
 1 1.000 -368 -176 -352 48 -352 144 -480 -176 spline
 1 1.000 -352 -192 -320 16 -320 144 -464 -192 spline
 1.000 0 -336 112 generic::arrow
 1 1.000 -464 -192 -480 -192 2 polygon
-(170V) {/Helvetica cf} 2 31 0 1.000 112 496 label
-0 1.000 1136 192 1136 80 1488 80 1488 192 4 polygon
-(140F        141F) {/Helvetica cf} 2 16 0 1.000 1168 128 label
-1.000 0 1168 -112 analog::switch
-1.000 0 1296 -112 analog::switch
-1.000 0 1168 -176 analog::gnd
-1.000 0 1296 -176 analog::gnd
 0 1.000 752 256 752 -176 960 -176 960 256 4 polygon
-1 1.000 960 0 1296 0 1296 -64 3 polygon
-1 1.000 1168 -64 1168 -32 960 -32 3 polygon
-1 2.000 960 128 1136 128 2 polygon
 1.000 0 1008 -160 analog::gnd
 1 1.000 1008 -160 960 -160 2 polygon
 1.000 0 816 256 analog::vdd
-1.000 0 1296 192 analog::vdd
-1.000 0 1408 80 analog::gnd
-0 1.000 1152 176 1152 96 1472 96 1472 176 4 polygon
 (ATMega) {/Helvetica cf} 2 16 0 1.000 784 176 label
-(UP) {/Helvetica cf} 2 16 0 1.000 1136 -272 label
-(Down) {/Helvetica cf} 2 16 0 1.000 1264 -272 label
-1.000 0 -320 848 analog::acsource
-1.000 90 -192 928 analog::diode
-1.000 0 480 848 analog::diode
-1.000 0 -64 848 analog::polarized
-1.000 0 560 1040 analog::resistor
-1.000 0 928 960 analog::vdd
-1 1.000 1040 112 1056 144 2 polygon
-(8) {/Helvetica cf} 2 16 0 1.000 1024 176 label
--1.000 270 -192 752 analog::diode
-(LinkSwitch-TN) {/Helvetica cf} 2 16 0 1.000 96 912 label
-0 1.000 64 976 64 880 384 880 384 976 4 polygon
-1.000 0 480 1024 analog::capacitor
-1 1.000 -320 912 -320 928 -240 928 3 polygon
-1 1.000 -320 784 -320 752 -240 752 3 polygon
-1 1.000 -144 928 -64 928 -64 912 3 polygon
-1 1.000 -144 752 -64 752 -64 784 3 polygon
-1 1.000 -64 928 64 928 2 polygon
-1 1.000 384 928 480 928 480 960 3 polygon
-1 1.000 480 1088 320 1088 320 976 3 polygon
-1.000 0 -64 752 analog::gnd
-1.000 90 704 928 analog::inductor
-1.000 0 816 848 analog::polarized
-1.000 90 672 1152 analog::resistor
-1 1.000 160 976 160 1152 608 1152 3 polygon
-1 1.000 560 1152 560 1104 2 polygon
-1 1.000 480 928 640 928 2 polygon
-1 1.000 560 976 560 928 2 polygon
-1 1.000 480 928 480 896 2 polygon
-1 1.000 768 928 816 928 816 912 3 polygon
-1 1.000 480 800 480 736 816 736 816 784 4 polygon
-1.000 0 816 1040 analog::diode
-1 1.000 816 992 816 928 2 polygon
-1 1.000 736 1152 816 1152 816 1088 3 polygon
-1.000 0 480 736 analog::gnd
-1.000 0 -64 928 generic::dot
-1.000 0 560 1152 generic::dot
-1.000 0 480 928 generic::dot
-1.000 0 560 928 generic::dot
-1.000 0 816 928 generic::dot
--1.000 180 816 544 analog::opamp
+-1.000 /sv 180 816 544 analog::opamp
 1.000 90 608 512 analog::resistor
 1.000 90 800 432 analog::resistor
 1.000 0 512 448 analog::gnd
@@ -514,10 +366,6 @@ sce
 1.000 0 944 544 generic::dot
 1.000 0 592 208 generic::dot
 1.000 0 -576 16 generic::dot
-1 1.000 64 432 64 464 32 464 96 464 4 polygon
-1 1.000 -64 864 -64 960 2 polygon
-(170V) {/Helvetica cf} 2 31 0 1.000 -16 1024 label
-1 1.000 -64 960 -64 992 -96 992 -32 992 4 polygon
 1 1.000 496 528 512 528 512 448 3 polygon
 1 1.000 544 512 512 512 2 polygon
 1 1.000 736 576 432 576 432 560 3 polygon
@@ -528,47 +376,32 @@ sce
 1 1.000 896 544 944 544 2 polygon
 1.000 0 688 512 generic::dot
 1.000 0 512 512 generic::dot
-1 1.000 816 928 928 928 928 960 3 polygon
 1 2.000 432 544 -576 544 -576 16 3 polygon
--1.000 0 -48 304 analog::pmos2
--1.000 0 64 368 analog::npn
--1.000 0 64 240 analog::pnp
-1 1.000 -48 368 -48 432 64 432 3 polygon
-1 1.000 16 304 64 304 2 polygon
-1.000 0 368 304 analog::diode
-1.000 0 368 96 analog::resistor
-1 1.000 64 432 368 432 368 352 3 polygon
-1 1.000 368 256 368 160 2 polygon
-1 1.000 368 160 64 160 64 176 3 polygon
-1.000 0 368 48 analog::gnd
-1 1.000 128 368 160 368 160 240 128 240 4 polygon
-1.000 0 224 368 analog::resistor
-1.000 0 224 64 analog::resistor
 1 1.000 288 -64 752 -64 2 polygon
-1 1.000 224 304 224 128 2 polygon
-1 1.000 160 304 224 304 2 polygon
-1.000 0 288 304 analog::capacitor
-1 1.000 288 368 288 432 2 polygon
-1 1.000 288 240 288 160 2 polygon
 1 1.000 -416 192 -416 224 -448 224 -448 192 4 polygon
 1 2.000 -432 224 -432 288 -160 288 -160 128 -96 128 5 polygon
-1 1.000 -50 240 -50 160 -98 160 -98 128 4 polygon
-1 1.000 -96 128 -96 96 -48 96 3 polygon
-1.000 0 -48 96 analog::gnd
-1.000 0 288 432 generic::dot
-1.000 0 224 432 generic::dot
-1.000 0 224 304 generic::dot
-1.000 0 288 160 generic::dot
-1.000 0 64 432 generic::dot
-(100k) {/Helvetica cf} 2 16 0 1.000 272 96 label
-(160k) {/Helvetica cf} 2 16 0 1.000 128 80 label
-(10k) {/Helvetica cf} 2 16 0 1.000 144 384 label
 (10k) {/Helvetica cf} 2 16 0 1.000 512 272 label
-(4.9k) {/Helvetica cf} 2 16 0 1.000 592 1040 label
-(10k) {/Helvetica cf} 2 16 0 1.000 672 1200 label
 (1k) {/Helvetica cf} 2 16 0 1.000 768 384 label
 (200k) {/Helvetica cf} 2 16 0 1.000 560 464 label
-1.000 0 160 304 generic::dot
+(BT or PC) {/Helvetica cf} 2 16 0 1.000 1040 48 label
+0 1.000 1008 96 1008 0 1248 0 1248 96 4 polygon
+1 1.000 1008 48 960 48 2 polygon
+(UART) {/Helvetica cf} 2 16 0 1.000 848 32 label
+0 1.000 -96 112 -96 272 80 272 80 112 4 polygon
+1 2.000 -96 240 -144 240 -144 304 -528 304 -528 -160 5 polygon
+1.000 0 64 384 analog::switch
+1.000 0 128 368 analog::inductor
+1 1.000 64 320 64 272 2 polygon
+1 1.000 64 432 64 624 2 polygon
+1 1.000 128 304 224 304 224 0 3 polygon
+1.000 0 128 416 analog::vdd
+1 1.000 32 272 32 624 2 polygon
+0 1.000 128 624 128 736 -32 736 -32 624 4 polygon
+(AC/DC) {/Helvetica cf} 2 16 0 1.000 0 672 label
+1.000 0 224 720 analog::vdd
+1 1.000 224 720 224 672 128 672 3 polygon
+(Power) {/Helvetica cf} 2 16 0 1.000 -64 192 label
+(Strip) {/Helvetica cf} 2 16 0 1.000 -64 160 label
 pgsave restore showpage
 
 %%Trailer
