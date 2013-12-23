@@ -8,10 +8,20 @@ SPIDEV = "/dev/spidev0.0"
 
 
 def gpio_output_enable(number):
-	f = open("/sys/class/gpio/export","w")
-	f.write(str(number))
-	f.close()
+	
 
+	# Enable the GPIO for modification
+
+	# If GPIO is already exported, it will error out,
+	try:
+		f = open("/sys/class/gpio/export","w")
+		f.write(str(number))
+		f.close()
+	except IOError:
+		# GPIO already exported
+		pass
+	
+	# Set GPIO direction to output
 	f = open("/sys/class/gpio/gpio"+str(number)+"/direction","w")
 	f.write("out")
 	f.close()
