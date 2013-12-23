@@ -40,7 +40,7 @@ def read_temperature():
 	print repr(data)
 
 	# convert the first 16 bits to an signed short
-	short = struct.unpack("<h",data)
+	short = struct.unpack(">h",data[0:2])[0]
 
 	# Get the last 2 bits by dividing by 2^2 (4)
 	shifted = data/(4)
