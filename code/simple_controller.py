@@ -1,11 +1,11 @@
 import time
 import hardware
 
-set_temp = 120
+set_temp = 145
 
 while(1):
 	temp = hardware.read_temperature()
-	print "Current:",temp,"degrees C.  Target: ",set_temp
+	print "Current:",temp,"degrees F.  Target: ",set_temp
 
 	if temp < set_temp:
 		# Temp too low, enabling heater
