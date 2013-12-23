@@ -1,3 +1,6 @@
+import struct
+
+
 PUMP_GPIO_NUM = 4
 HEATER_GPIO_NUM = 4
 SPIDEV = "/dev/spidev0.0"
