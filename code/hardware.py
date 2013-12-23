@@ -33,7 +33,7 @@ def gpio_set(number):
 	f.write("1")
 	f.close()
 
-def gpio_clear():
+def gpio_clear(number):
 	gpio_output_enable(number)
 
 	f = open("/sys/class/gpio/gpio"+str(number)+"/value","w")
@@ -47,20 +47,18 @@ def read_temperature():
 	data = f.read(4)
 	f.close()
 
-	print repr(data)
 
 	# convert the first 16 bits to an signed short
 	short = struct.unpack(">h",data[0:2])[0]
 
 	# Get the last 2 bits by dividing by 2^2 (4)
-	shifted = data/(4)
+	shifted = short/(4)
 
 	# convert 1/4 degrees units to a degrees C
 	tempC = shifted / 4.0
 
 	tempF = tempC * 9 / 5 + 32
 
-	print tempC, tempF
 
 	return tempF
 
