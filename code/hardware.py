@@ -57,19 +57,19 @@ def read_temperature():
 
 # Enables the circulating water pump
 def enable_pump():
-	gpio_output_clear(PUMP_GPIO_NUM)
+	gpio_clear(PUMP_GPIO_NUM)
 
 # Disable the circulating water pump
 def disable_pump():
-	gpio_output_set(PUMP_GPIO_NUM)
+	gpio_set(PUMP_GPIO_NUM)
 
 # Enable Heating Coil
 def enable_heater():
-	gpio_output_clear(HEATER_GPIO_NUM)
+	gpio_clear(HEATER_GPIO_NUM)
 
 # Disable Heating Coil
 def disable_heater():
-	gpio_output_set(HEATER_GPIO_NUM)
+	gpio_set(HEATER_GPIO_NUM)
 
 
 
