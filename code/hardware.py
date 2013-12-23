@@ -34,8 +34,10 @@ def read_temperature():
 	data = f.read(4)
 	f.close()
 
+	print repr(data)
+
 	# convert the first 16 bits to an signed short
-	short = struct.unpack("<?",data)
+	short = struct.unpack("<h",data)
 
 	# Get the last 2 bits by dividing by 2^2 (4)
 	shifted = data/(4)
@@ -44,6 +46,11 @@ def read_temperature():
 	tempC = shifted / 4.0
 
 	tempF = tempC * 9 / 5 + 32
+
+	print tempC, tempF
+
+	return tempF
+
 
 # Enables the circulating water pump
 def enable_pump():
